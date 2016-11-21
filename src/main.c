@@ -76,7 +76,6 @@ int main(int argc, const char * const argv[]) {
 		return EX_SOFTWARE;
 	}
 
-	// Do the work
 	for (int arg = 1; arg < argc; arg++) {
 		if(!setStation(&url, argv[arg])) {
 			continue;
