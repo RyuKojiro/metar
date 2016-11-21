@@ -4,6 +4,8 @@
 #include <ctype.h>    // toupper, isalnum
 #include <assert.h>   // assert
 
+#define URL_TEMPLATE "ftp://tgftp.nws.noaa.gov/data/observations/metar/stations/XXXX.TXT"
+
 union url {
 	char entirety[67];
 	struct parts {
@@ -30,7 +32,7 @@ static void setStation(union url *url, const char *station) {
 
 
 int main(int argc, const char * const argv[]) {
-	union url url = {"ftp://tgftp.nws.noaa.gov/data/observations/metar/stations/XXXX.TXT"};
+	union url url = {URL_TEMPLATE};
 	if (argc < 2) {
 		warnx("At least one argument is required");
 		return usage();
