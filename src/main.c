@@ -11,6 +11,11 @@
 
 #define URL_TEMPLATE    URL_FIDDLYBITS URL_STATION URL_EXTENSION
 
+/* This unholy union achieves the magic of a type that can be constructed using
+ * a compound initializer with a string literal inside, but have the template
+ * section easily modifiable at runtime. It is unfornately statically sized to
+ * match only one template string at a time.
+ */
 union url {
 	char entirety[sizeof(URL_TEMPLATE)];
 	struct parts {
