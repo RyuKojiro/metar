@@ -22,6 +22,7 @@ union url {
 };
 
 #define STATION_ID_LEN         (sizeof(URL_STATION) - 1)
+#define DEFAULT_STATION_PREFIX 'K'
 
 static int __attribute__((noreturn)) usage(void) {
 	errx(EX_USAGE, "usage: metar <station_id ...>");
@@ -44,9 +45,9 @@ static bool setStation(union url *url, const char *station) {
 		url->parts.station[STATION_ID_LEN - i] = (char)toupper(station[len - i]);
 	}
 
-	// If it was only 3 characters, prepend the 'K'
-	if (len == 3) {
-		url->parts.station[0] = 'K';
+	// If it is a character short, prepend the 'K'
+	if (len == STATION_ID_LEN - 1) {
+		url->parts.station[0] = DEFAULT_STATION_PREFIX;
 	}
 	return true;
 }
