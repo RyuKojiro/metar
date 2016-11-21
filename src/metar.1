@@ -1,0 +1,21 @@
+.Dd 11/21/16
+.Dt metar 1 
+.Os Darwin
+.Sh NAME 
+.Nm metar
+.Nd get METAR reports from weather stations
+.Sh SYNOPSIS
+.Nm
+.Ar station_id
+.Op Ar ...
+.Sh DESCRIPTION
+This utility fetches NOAA weather information from reporting stations that have an ICAO identifier.
+Use is as simple as
+.Nm
+.Ar station_id
+, where
+.Ar station_id
+is a valid ICAO identifier. You may specify multiple stations per invocation.
+.Pp
+.Sh SEE ALSO 
+.Xr date 1
