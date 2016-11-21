@@ -1,27 +1,30 @@
 CFLAGS=-lcurl
-BUILDDIR=bin
-BIN=metar
-MAN=metar.1
 SRCS=src/main.c
-MANPAGE=src/$(MAN)
-PROG=$(BUILDDIR)/$(BIN)
-MANDEST=/usr/share/man/man1/
-PREFIX?=/usr/local/bin/
+BUILDDIR=bin
 
-$(PROG): $(BUILDDIR) $(SRCS)
-	$(CC) $(CFLAGS) -o $(PROG) $(SRCS)
+PROG=metar
+MANPAGE=metar.1
+
+MAN=src/$(MANPAGE)
+BIN=$(BUILDDIR)/$(PROG)
+PREFIX?=/usr/local
+MANDEST=$(PREFIX)/share/man/man1
+BINDEST=$(PREFIX)/bin
+
+$(BIN): $(BUILDDIR) $(SRCS)
+	$(CC) $(CFLAGS) -o $(BIN) $(SRCS)
 
 $(BUILDDIR):
 	mkdir $(BUILDDIR)
 
 clean:
-	rm -f $(OBJS) $(PROG)
+	rm -f $(OBJS) $(BIN)
 
-install: $(PROG)
-	install $(PROG) $(PREFIX)
+install: $(BIN)
+	install $(BIN) $(BINDEST)
 	install $(MANPAGE) $(MANDEST)
 
 uninstall:
-	rm -f $(PREFIX)/$(BIN) $(MANDEST)/$(MAN)
+	rm -f $(BINDEST)/$(BIN) $(MANDEST)/$(MAN)
 
 .PHONY: all clean install uninstall
