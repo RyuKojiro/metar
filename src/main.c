@@ -39,7 +39,7 @@ static bool setStation(union url *url, const char *station) {
 			warnx("Station ID must contain only alphanumeric characters.");
 			return false;
 		}
-		url->parts.station[STATION_ID_LEN - i] = toupper(station[len - i]);
+		url->parts.station[STATION_ID_LEN - i] = (char)toupper(station[len - i]);
 	}
 
 	// If it was only 3 characters, prepend the 'K'
@@ -50,6 +50,7 @@ static bool setStation(union url *url, const char *station) {
 }
 
 static size_t printData(void *contents, size_t size, size_t nmemb, void *userp) {
+	(void)userp;
 	printf("%s", contents);
 	return size * nmemb;
 }
