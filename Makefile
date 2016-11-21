@@ -22,9 +22,9 @@ clean:
 
 install: $(BIN)
 	install $(BIN) $(BINDEST)
-	install $(MANPAGE) $(MANDEST)
+	install $(MAN) $(MANDEST)
 
 uninstall:
-	rm -f $(BINDEST)/$(BIN) $(MANDEST)/$(MAN)
+	rm -f $(BINDEST)/$(PROG) $(MANDEST)/$(MANPAGE)
 
 .PHONY: all clean install uninstall
