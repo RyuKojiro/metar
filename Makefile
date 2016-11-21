@@ -8,7 +8,7 @@ PROG=$(BUILDDIR)/$(BIN)
 MANDEST=/usr/share/man/man1/
 PREFIX?=/usr/local/bin/
 
-$(PROG): $(BUILDDIR)
+$(PROG): $(BUILDDIR) $(SRCS)
 	$(CC) $(CFLAGS) -o $(PROG) $(SRCS)
 
 $(BUILDDIR):
