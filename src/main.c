@@ -5,15 +5,19 @@
 #include <string.h>   // strlen
 #include <stdbool.h>
 
-#define URL_TEMPLATE    "ftp://tgftp.nws.noaa.gov/data/observations/metar/stations/XXXX.TXT"
+#define URL_FIDDLYBITS  "ftp://tgftp.nws.noaa.gov/data/observations/metar/stations/"
+#define URL_STATION		"XXXX"
+#define URL_EXTENSION   ".TXT"
+
+#define URL_TEMPLATE    URL_FIDDLYBITS URL_STATION URL_EXTENSION
 #define STATION_ID_LEN  4
 
 union url {
-	char entirety[67];
+	char entirety[sizeof(URL_TEMPLATE)];
 	struct parts {
-		char fiddlybits[58];
-		char station[STATION_ID_LEN];
-		char extension[4];
+		char fiddlybits[sizeof(URL_FIDDLYBITS) - 1];
+		char station   [sizeof(URL_STATION)    - 1];
+		char extension [sizeof(URL_EXTENSION)  - 1];
 		char terminator;
 	} parts;
 };
