@@ -88,6 +88,7 @@ int main(int argc, const char * const argv[]) {
 		// TODO: Give a proper message for whatever error indicates the lack of a metar file
 
 		if (res != CURLE_OK) {
+			warnx("%s", curl_easy_strerror(res));
 			warnx("Unable to fetch information for station ID \"%s\"", argv[arg]);
 			continue;
 		}
