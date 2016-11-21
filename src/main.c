@@ -30,6 +30,10 @@ static void setStation(union url *url, const char *station) {
 	}
 }
 
+static size_t printData(void *contents, size_t size, size_t nmemb, void *userp) {
+	printf("%s", contents);
+	return size * nmemb;
+}
 
 int main(int argc, const char * const argv[]) {
 	union url url = {URL_TEMPLATE};
@@ -39,14 +43,20 @@ int main(int argc, const char * const argv[]) {
 	}
 
 	CURL *curl = curl_easy_init();
-	if(!curl) {
+	if (!curl) {
 		return EX_SOFTWARE;
 	}
 
 	// Do the work
-	for(int arg = 1; arg < argc; arg++) {
+	for (int arg = 1; arg < argc; arg++) {
 		setStation(&url, argv[arg]);
-		printf("%s\n", url.entirety);
+		curl_easy_setopt(curl, CURLOPT_URL, url.entirety);
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, printData);
+		CURLcode res = curl_easy_perform(curl);
+		if (res != CURLE_OK) {
+			warnx("Unable to fetch information for station ID \"%s\"", argv[arg]);
+			continue;
+		}
 	}
 
 	curl_easy_cleanup(curl);
