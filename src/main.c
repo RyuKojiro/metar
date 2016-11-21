@@ -42,6 +42,10 @@ int main(int argc, const char * const argv[]) {
 	}
 
 	// Do the work
+	for(int arg = 1; arg < argc; arg++) {
+		setStation(&url, argv[arg]);
+		printf("%s\n", url.entirety);
+	}
 
 	curl_easy_cleanup(curl);
 	curl_global_cleanup();
