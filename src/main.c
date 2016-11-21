@@ -85,6 +85,8 @@ int main(int argc, const char * const argv[]) {
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, printData);
 		CURLcode res = curl_easy_perform(curl);
 
+		// TODO: Give a proper message for whatever error indicates the lack of a metar file
+
 		if (res != CURLE_OK) {
 			warnx("Unable to fetch information for station ID \"%s\"", argv[arg]);
 			continue;
