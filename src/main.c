@@ -29,10 +29,6 @@ union url {
 #define STATION_ID_LEN         (sizeof(URL_STATION) - 1)
 #define DEFAULT_STATION_PREFIX 'K'
 
-static int __attribute__((noreturn)) usage(void) {
-	errx(EX_USAGE, "usage: metar <station_id ...>");
-}
-
 static bool setStation(union url *url, const char *station) {
 	size_t len = strlen(station);
 	if(len != STATION_ID_LEN &&
@@ -61,6 +57,10 @@ static size_t printData(void *contents, size_t size, size_t nmemb, void *userp) 
 	(void)userp;
 	printf("%s", contents);
 	return size * nmemb;
+}
+
+static int __attribute__((noreturn)) usage(void) {
+	errx(EX_USAGE, "usage: metar <station_id ...>");
 }
 
 int main(int argc, const char * const argv[]) {
