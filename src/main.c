@@ -5,7 +5,7 @@
 #include <string.h>   // strlen
 #include <stdbool.h>
 
-#define URL_FIDDLYBITS  "ftp://tgftp.nws.noaa.gov/data/observations/metar/stations/"
+#define URL_FIDDLYBITS  "http://tgftp.nws.noaa.gov/data/observations/metar/stations/"
 #define URL_STATION		"XXXX"
 #define URL_EXTENSION   ".TXT"
 
