@@ -12,7 +12,7 @@ union url {
 	char entirety[67];
 	struct parts {
 		char fiddlybits[58];
-		char station[4];
+		char station[STATION_ID_LEN];
 		char extension[4];
 		char terminator;
 	} parts;
