@@ -21,10 +21,10 @@
  */
 
 #include <curl/curl.h>
-#include <sysexits.h> // EX_USAGE, EX_OK
-#include <err.h>      // errx, warnx
-#include <ctype.h>    // toupper, isalnum
-#include <string.h>   // strlen
+#include <sysexits.h> /* EX_USAGE, EX_OK */
+#include <err.h>      /* errx, warnx */
+#include <ctype.h>    /* toupper, isalnum */
+#include <string.h>   /* strlen */
 #include <stdbool.h>
 
 /* For TAFs:            "http://tgftp.nws.noaa.gov/data/forecasts/taf/stations/" */
@@ -60,7 +60,7 @@ static bool setStation(union url *url, const char *station) {
 		return false;
 	}
 
-	// Transfer the station id from end to beginning
+	/* Transfer the station id from end to beginning */
 	for(size_t i = 1; i <= len; i++) {
 		if(!isalnum(station[len - i])) {
 			warnx("Station ID must contain only alphanumeric characters.");
@@ -69,7 +69,7 @@ static bool setStation(union url *url, const char *station) {
 		url->parts.station[STATION_ID_LEN - i] = (char)toupper(station[len - i]);
 	}
 
-	// If it is a character short, prepend the 'K'
+	/* If it is a character short, prepend the 'K' */
 	if (len == STATION_ID_LEN - 1) {
 		url->parts.station[0] = DEFAULT_STATION_PREFIX;
 	}
