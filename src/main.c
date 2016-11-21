@@ -1,6 +1,14 @@
 #include <curl/curl.h>
 #include <sysexits.h>
 #include <string.h>
+#include <err.h>
+
+static int usage(void) {
+	errx(EX_USAGE, "usage: metar <station_id ...>");
+
+	// Never reached
+	return EX_USAGE;
+}
 
 int main(int argc, const char * const argv[]) {
 	union url {
@@ -12,6 +20,11 @@ int main(int argc, const char * const argv[]) {
 			char terminator;
 		} parts;
 	} url = {"ftp://tgftp.nws.noaa.gov/data/observations/metar/stations/XXXX.TXT"};
+
+	if (argc < 2) {
+		warnx("At least one argument is required");
+		return usage();
+	}
 
 	CURL *curl = curl_easy_init();
 	if(!curl) {
