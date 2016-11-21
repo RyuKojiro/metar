@@ -10,7 +10,6 @@
 #define URL_EXTENSION   ".TXT"
 
 #define URL_TEMPLATE    URL_FIDDLYBITS URL_STATION URL_EXTENSION
-#define STATION_ID_LEN  4
 
 union url {
 	char entirety[sizeof(URL_TEMPLATE)];
@@ -21,6 +20,8 @@ union url {
 		char terminator;
 	} parts;
 };
+
+#define STATION_ID_LEN         (sizeof(URL_STATION) - 1)
 
 static int __attribute__((noreturn)) usage(void) {
 	errx(EX_USAGE, "usage: metar <station_id ...>");
