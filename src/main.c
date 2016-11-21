@@ -27,6 +27,7 @@
 #include <string.h>   // strlen
 #include <stdbool.h>
 
+/* For TAFs:            "http://tgftp.nws.noaa.gov/data/forecasts/taf/stations/" */
 #define URL_FIDDLYBITS  "http://tgftp.nws.noaa.gov/data/observations/metar/stations/"
 #define URL_STATION		"XXXX"
 #define URL_EXTENSION   ".TXT"
