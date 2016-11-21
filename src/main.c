@@ -86,7 +86,7 @@ int main(int argc, const char * const argv[]) {
 		CURLcode res = curl_easy_perform(curl);
 
 		if (res == CURLE_REMOTE_FILE_NOT_FOUND) {
-			warnx("Station ID \"%s\" is not a valid station", argv[arg]);
+			warnx("Station ID \"%s\" not found", argv[arg]);
 			continue;
 		}
 
