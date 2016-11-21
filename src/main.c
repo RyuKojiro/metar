@@ -54,6 +54,8 @@ union url {
 
 static bool setStation(union url *url, const char *station) {
 	size_t len = strlen(station);
+	size_t i;
+
 	if(len != STATION_ID_LEN &&
 	   len != STATION_ID_LEN - 1) {
 		warnx("Station ID must be either three or four characters long.");
@@ -61,7 +63,7 @@ static bool setStation(union url *url, const char *station) {
 	}
 
 	/* Transfer the station id from end to beginning */
-	for(size_t i = 1; i <= len; i++) {
+	for(i = 1; i <= len; i++) {
 		if(!isalnum(station[len - i])) {
 			warnx("Station ID must contain only alphanumeric characters.");
 			return false;
@@ -87,26 +89,30 @@ static int __attribute__((noreturn)) usage(void) {
 }
 
 int main(int argc, const char * const argv[]) {
+	CURL *curl;
+	CURLcode res;
+	int arg;
 	union url url = {URL_TEMPLATE};
+
 	if (argc < 2) {
 		warnx("At least one argument is required");
 		usage();
 		return EX_USAGE;
 	}
 
-	CURL *curl = curl_easy_init();
+	curl = curl_easy_init();
 	if (!curl) {
 		return EX_SOFTWARE;
 	}
 
-	for (int arg = 1; arg < argc; arg++) {
+	for (arg = 1; arg < argc; arg++) {
 		if(!setStation(&url, argv[arg])) {
 			continue;
 		}
 
 		curl_easy_setopt(curl, CURLOPT_URL, url.entirety);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, printData);
-		CURLcode res = curl_easy_perform(curl);
+		res = curl_easy_perform(curl);
 
 		if (res == CURLE_REMOTE_FILE_NOT_FOUND) {
 			warnx("Station ID \"%s\" not found", argv[arg]);
