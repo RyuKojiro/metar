@@ -85,7 +85,10 @@ int main(int argc, const char * const argv[]) {
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, printData);
 		CURLcode res = curl_easy_perform(curl);
 
-		// TODO: Give a proper message for whatever error indicates the lack of a metar file
+		if (res == CURLE_REMOTE_FILE_NOT_FOUND) {
+			warnx("Station ID \"%s\" is not a valid station", argv[arg]);
+			continue;
+		}
 
 		if (res != CURLE_OK) {
 			warnx("%s", curl_easy_strerror(res));
