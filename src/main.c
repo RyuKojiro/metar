@@ -22,11 +22,8 @@ union url {
 	} parts;
 };
 
-static int usage(void) {
+static int __attribute__((noreturn)) usage(void) {
 	errx(EX_USAGE, "usage: metar <station_id ...>");
-
-	// Never reached
-	return EX_USAGE;
 }
 
 static bool setStation(union url *url, const char *station) {
@@ -63,7 +60,8 @@ int main(int argc, const char * const argv[]) {
 	union url url = {URL_TEMPLATE};
 	if (argc < 2) {
 		warnx("At least one argument is required");
-		return usage();
+		usage();
+		return EX_USAGE;
 	}
 
 	CURL *curl = curl_easy_init();
