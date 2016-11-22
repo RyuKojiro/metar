@@ -49,8 +49,9 @@ union url {
 	} parts;
 };
 
-#define STATION_ID_LEN         (sizeof(URL_STATION) - 1)
-#define DEFAULT_STATION_PREFIX 'K'
+#define STATION_ID_LEN          (sizeof(URL_STATION) - 1)
+#define DEFAULT_STATION_PREFIX  'K'
+#define HTTP_RESPONSE_NOT_FOUND 404
 
 static bool setStation(union url *url, const char *station) {
 	size_t len = strlen(station);
@@ -92,6 +93,8 @@ int main(int argc, const char * const argv[]) {
 	CURL *curl;
 	CURLcode res;
 	int arg;
+	long response;
+
 	union url url = {URL_TEMPLATE};
 
 	if (argc < 2) {
@@ -112,9 +115,12 @@ int main(int argc, const char * const argv[]) {
 
 		curl_easy_setopt(curl, CURLOPT_URL, url.entirety);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, printData);
+		curl_easy_setopt(curl, CURLOPT_FAILONERROR, true);
 		res = curl_easy_perform(curl);
 
-		if (res == CURLE_REMOTE_FILE_NOT_FOUND) {
+		/* This is resilient to both FTP and HTTP */
+		curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response);
+		if (res == CURLE_REMOTE_FILE_NOT_FOUND || response == HTTP_RESPONSE_NOT_FOUND) {
 			warnx("Station ID \"%s\" not found", argv[arg]);
 			continue;
 		}
