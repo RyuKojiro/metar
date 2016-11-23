@@ -36,6 +36,8 @@
 #define DEFAULT_STATION_PREFIX  'K'
 #define HTTP_RESPONSE_NOT_FOUND 404
 
+#define URL_BUFFER_LEN     (sizeof(URL_PREFIX_METAR) + STATION_ID_LEN + sizeof(URL_EXTENSION))
+
 enum urlType {
 	METAR,
 	TAF,
@@ -108,8 +110,7 @@ int main(int argc, const char * const argv[]) {
 	CURLcode res;
 	int arg;
 	long response;
-
-	union url url = {URL_TEMPLATE};
+	char url[URL_BUFFER_LEN];
 
 	if (argc < 2) {
 		warnx("At least one argument is required");
@@ -123,11 +124,11 @@ int main(int argc, const char * const argv[]) {
 	}
 
 	for (arg = 1; arg < argc; arg++) {
-		if(!setStation(&url, argv[arg])) {
+		if(!formURL(url, sizeof(url), METAR, argv[arg])) {
 			continue;
 		}
 
-		curl_easy_setopt(curl, CURLOPT_URL, url.entirety);
+		curl_easy_setopt(curl, CURLOPT_URL, url);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, printData);
 		curl_easy_setopt(curl, CURLOPT_FAILONERROR, true);
 		res = curl_easy_perform(curl);
