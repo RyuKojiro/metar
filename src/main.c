@@ -28,6 +28,8 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <unistd.h>   /* getopt */
+#include <stdlib.h>   /* exit */
+#include <stdio.h>    /* printf, fprintf */
 
 #define URL_PREFIX_TAF     "http://tgftp.nws.noaa.gov/data/forecasts/taf/stations/"
 #define URL_PREFIX_DECODED "http://tgftp.nws.noaa.gov/data/observations/metar/decoded/"
@@ -115,7 +117,10 @@ static size_t printData(void *contents, size_t size, size_t nmemb, void *userp) 
 }
 
 static int __attribute__((noreturn)) usage(void) {
-	errx(EX_USAGE, "usage: metar <station_id ...>");
+	fprintf(stderr, "usage: metar [-d] <station_id ...>\n"
+	                "\t-d Show decoded METAR output\n"
+	);
+	exit(EX_USAGE);
 }
 
 int main(int argc, char * const argv[]) {
