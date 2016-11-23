@@ -132,14 +132,16 @@ int main(int argc, const char * const argv[]) {
 		return EX_SOFTWARE;
 	}
 
+	/* Only set up the things that will be the same for every request once. */
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, printData);
+	curl_easy_setopt(curl, CURLOPT_FAILONERROR, true);
+
 	for (arg = 1; arg < argc; arg++) {
 		if(!formURL(url, sizeof(url), METAR, argv[arg])) {
 			continue;
 		}
 
 		curl_easy_setopt(curl, CURLOPT_URL, url);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, printData);
-		curl_easy_setopt(curl, CURLOPT_FAILONERROR, true);
 		res = curl_easy_perform(curl);
 
 		/* This is resilient to both FTP and HTTP */
