@@ -26,6 +26,7 @@
 #include <ctype.h>    /* toupper, isalnum */
 #include <string.h>   /* strlen */
 #include <stdbool.h>
+#include <assert.h>
 
 #define URL_PREFIX_TAF     "http://tgftp.nws.noaa.gov/data/forecasts/taf/stations/"
 #define URL_PREFIX_DECODED "http://tgftp.nws.noaa.gov/data/observations/metar/decoded/"
@@ -90,7 +91,12 @@ static bool formURL(char *buf, size_t bufLen, enum urlType type, const char *sta
 	if (stationLen == STATION_ID_LEN - 1) {
 		buf[written] = DEFAULT_STATION_PREFIX;
 	}
+	written += STATION_ID_LEN;
 
+	/* Append the extension. If the following assertion fails, then we were
+	 * handed a buffer that was too short! */
+	assert(bufLen >= written + sizeof(URL_EXTENSION));
+	strncpy(buf + written, URL_EXTENSION, sizeof(URL_EXTENSION));
 
 	return true;
 }
