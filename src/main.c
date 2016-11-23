@@ -37,6 +37,9 @@
 #define DEFAULT_STATION_PREFIX  'K'
 #define HTTP_RESPONSE_NOT_FOUND 404
 
+/* This value must be larger than the largest possible URL produced. This is
+ * easy to ensure by simply keeping the prefix sizeof (the first one) set to
+ * the largest prefix possible. */
 #define URL_BUFFER_LEN     (sizeof(URL_PREFIX_METAR) + STATION_ID_LEN + sizeof(URL_EXTENSION))
 
 enum urlType {
