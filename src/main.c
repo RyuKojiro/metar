@@ -27,55 +27,63 @@
 #include <string.h>   /* strlen */
 #include <stdbool.h>
 
-/* For TAFs:            "http://tgftp.nws.noaa.gov/data/forecasts/taf/stations/" */
-/* For Decoded METARs:  "http://tgftp.nws.noaa.gov/data/observations/metar/decoded/" */
-#define URL_FIDDLYBITS  "http://tgftp.nws.noaa.gov/data/observations/metar/stations/"
-#define URL_STATION     "XXXX"
-#define URL_EXTENSION   ".TXT"
+#define URL_PREFIX_TAF     "http://tgftp.nws.noaa.gov/data/forecasts/taf/stations/"
+#define URL_PREFIX_DECODED "http://tgftp.nws.noaa.gov/data/observations/metar/decoded/"
+#define URL_PREFIX_METAR   "http://tgftp.nws.noaa.gov/data/observations/metar/stations/"
+#define URL_EXTENSION      ".TXT"
 
-#define URL_TEMPLATE    URL_FIDDLYBITS URL_STATION URL_EXTENSION
-
-/* This unholy union achieves the magic of a type that can be constructed using
- * a compound initializer with a string literal inside, but have the template
- * section easily modifiable at runtime. It is unfornately statically sized to
- * match only one template string at a time.
- */
-union url {
-	char entirety[sizeof(URL_TEMPLATE)];
-	struct parts {
-		char fiddlybits[sizeof(URL_FIDDLYBITS) - 1];
-		char station   [sizeof(URL_STATION)    - 1];
-		char extension [sizeof(URL_EXTENSION)  - 1];
-		char terminator;
-	} parts;
-};
-
-#define STATION_ID_LEN          (sizeof(URL_STATION) - 1)
+#define STATION_ID_LEN          (4)
 #define DEFAULT_STATION_PREFIX  'K'
 #define HTTP_RESPONSE_NOT_FOUND 404
 
-static bool setStation(union url *url, const char *station) {
-	size_t len = strlen(station);
-	size_t i;
+enum urlType {
+	METAR,
+	TAF,
+	Decoded
+};
 
-	if(len != STATION_ID_LEN &&
-	   len != STATION_ID_LEN - 1) {
+static bool formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
+	size_t stationLen = strlen(station);
+	size_t i, written;
+
+	/* Ensure the station is a valid length */
+	if(stationLen != STATION_ID_LEN &&
+	   stationLen != STATION_ID_LEN - 1) {
 		warnx("Station ID must be either three or four characters long.");
 		return false;
 	}
 
+	/* Copy the first part of the URL */
+	switch (type) {
+		case METAR: {
+			strncpy(buf, URL_PREFIX_METAR, bufLen);
+			written = sizeof(URL_PREFIX_METAR);
+		} break;
+		case TAF: {
+			strncpy(buf, URL_PREFIX_TAF, bufLen);
+			written = sizeof(URL_PREFIX_TAF);
+		} break;
+		case Decoded: {
+			strncpy(buf, URL_PREFIX_DECODED, bufLen);
+			written = sizeof(URL_PREFIX_DECODED);
+		} break;
+		default: {
+			return false;
+		}
+	}
+
 	/* Transfer the station id from end to beginning */
-	for(i = 1; i <= len; i++) {
-		if(!isalnum(station[len - i])) {
+	for(i = 1; i <= stationLen; i++) {
+		if(!isalnum(station[stationLen - i])) {
 			warnx("Station ID must contain only alphanumeric characters.");
 			return false;
 		}
-		url->parts.station[STATION_ID_LEN - i] = (char)toupper(station[len - i]);
+		buf[(written + STATION_ID_LEN) - i] = (char)toupper(station[stationLen - i]);
 	}
 
 	/* If it is a character short, prepend the 'K' */
-	if (len == STATION_ID_LEN - 1) {
-		url->parts.station[0] = DEFAULT_STATION_PREFIX;
+	if (stationLen == STATION_ID_LEN - 1) {
+		buf[0] = DEFAULT_STATION_PREFIX;
 	}
 	return true;
 }
