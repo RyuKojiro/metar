@@ -1,4 +1,4 @@
-CFLAGS=-lcurl
+CFLAGS=-lcurl -Wall
 SRCS=src/main.c
 BUILDDIR=bin
 
