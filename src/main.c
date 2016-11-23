@@ -119,6 +119,7 @@ static size_t printData(void *contents, size_t size, size_t nmemb, void *userp) 
 static int __attribute__((noreturn)) usage(void) {
 	fprintf(stderr, "usage: metar [-d] <station_id ...>\n"
 	                "\t-d Show decoded METAR output\n"
+	                "\t-t Show TAFs where available\n"
 	);
 	exit(EX_USAGE);
 }
@@ -131,11 +132,15 @@ int main(int argc, char * const argv[]) {
 	char url[URL_BUFFER_LEN];
 	int ch;
 	bool decoded = false;
+	bool tafs = false;
 
-	while((ch = getopt(argc, argv, "d")) != -1) {
+	while((ch = getopt(argc, argv, "dt")) != -1) {
 		switch (ch) {
 			case 'd': {
 				decoded = true;
+			} break;
+			case 't': {
+				tafs = true;
 			} break;
 			case '?':
 			default: {
@@ -181,6 +186,16 @@ int main(int argc, char * const argv[]) {
 			warnx("%s", curl_easy_strerror(res));
 			warnx("Unable to fetch information for station ID \"%s\"", argv[arg]);
 			continue;
+		}
+
+		/* If -t was specified, attempt to fetch TAF, failing silently */
+		if(!formURL(url, sizeof(url), TAF, argv[arg])) {
+			continue;
+		}
+
+		if (tafs) {
+			curl_easy_setopt(curl, CURLOPT_URL, url);
+			res = curl_easy_perform(curl);
 		}
 	}
 
