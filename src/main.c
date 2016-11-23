@@ -27,6 +27,7 @@
 #include <string.h>   /* strlen */
 #include <stdbool.h>
 #include <assert.h>
+#include <unistd.h>   /* getopt */
 
 #define URL_PREFIX_TAF     "http://tgftp.nws.noaa.gov/data/forecasts/taf/stations/"
 #define URL_PREFIX_DECODED "http://tgftp.nws.noaa.gov/data/observations/metar/decoded/"
@@ -114,14 +115,31 @@ static int __attribute__((noreturn)) usage(void) {
 	errx(EX_USAGE, "usage: metar <station_id ...>");
 }
 
-int main(int argc, const char * const argv[]) {
+int main(int argc, char * const argv[]) {
 	CURL *curl;
 	CURLcode res;
 	int arg;
 	long response;
 	char url[URL_BUFFER_LEN];
+	int ch;
+	bool decoded = false;
 
-	if (argc < 2) {
+	while((ch = getopt(argc, argv, "d")) != -1) {
+		switch (ch) {
+			case 'd': {
+				decoded = true;
+			} break;
+			case '?':
+			default: {
+				usage();
+				return EX_USAGE;
+			}
+		}
+	}
+	argc -= optind;
+	argv += optind;
+
+	if (argc < 1) {
 		warnx("At least one argument is required");
 		usage();
 		return EX_USAGE;
@@ -136,8 +154,8 @@ int main(int argc, const char * const argv[]) {
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, printData);
 	curl_easy_setopt(curl, CURLOPT_FAILONERROR, true);
 
-	for (arg = 1; arg < argc; arg++) {
-		if(!formURL(url, sizeof(url), METAR, argv[arg])) {
+	for (arg = 0; arg < argc; arg++) {
+		if(!formURL(url, sizeof(url), decoded ? Decoded : METAR, argv[arg])) {
 			continue;
 		}
 
