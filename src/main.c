@@ -117,7 +117,7 @@ static size_t printData(void *contents, size_t size, size_t nmemb, void *userp) 
 }
 
 static int __attribute__((noreturn)) usage(void) {
-	fprintf(stderr, "usage: metar [-d] <station_id ...>\n"
+	fprintf(stderr, "usage: metar [-dt] <station_id ...>\n"
 	                "\t-d Show decoded METAR output\n"
 	                "\t-t Show TAFs where available\n"
 	);
