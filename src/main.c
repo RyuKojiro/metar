@@ -107,6 +107,9 @@ static bool formURL(char *buf, size_t bufLen, enum urlType type, const char *sta
 
 static size_t printData(void *contents, size_t size, size_t nmemb, void *userp) {
 	(void)userp;
+
+	/* NOAA automated information always has a newline at the end, as is required
+	 * to be valid POSIX text. */
 	printf("%s", contents);
 	return size * nmemb;
 }
