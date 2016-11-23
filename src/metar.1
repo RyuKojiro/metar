@@ -6,6 +6,7 @@
 .Nd get METAR reports from weather stations
 .Sh SYNOPSIS
 .Nm
+.Op Fl d
 .Ar station_id
 .Op Ar ...
 .Sh DESCRIPTION
@@ -16,6 +17,12 @@ Use is as simple as
 , where
 .Ar station_id
 is a valid ICAO identifier. You may specify multiple stations per invocation.
+.Pp
+A list of flags and their descriptions:
+.Bl -tag -width -indent
+.It Fl d
+Show decoded METAR output
+.El
 .Pp
 .Sh SEE ALSO 
 .Xr date 1
