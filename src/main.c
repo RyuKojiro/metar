@@ -72,6 +72,9 @@ static bool formURL(char *buf, size_t bufLen, enum urlType type, const char *sta
 		}
 	}
 
+	/* Subtract one for the null terminator */
+	written--;
+
 	/* Transfer the station id from end to beginning */
 	for(i = 1; i <= stationLen; i++) {
 		if(!isalnum(station[stationLen - i])) {
@@ -83,8 +86,10 @@ static bool formURL(char *buf, size_t bufLen, enum urlType type, const char *sta
 
 	/* If it is a character short, prepend the 'K' */
 	if (stationLen == STATION_ID_LEN - 1) {
-		buf[0] = DEFAULT_STATION_PREFIX;
+		buf[written] = DEFAULT_STATION_PREFIX;
 	}
+
+
 	return true;
 }
 
