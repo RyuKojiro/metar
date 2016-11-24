@@ -195,7 +195,7 @@ int main(int argc, char * const argv[]) {
 			}
 
 			curl_easy_setopt(curl, CURLOPT_URL, url);
-			res = curl_easy_perform(curl);
+			curl_easy_perform(curl);
 		}
 	}
 
