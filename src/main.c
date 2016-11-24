@@ -189,11 +189,11 @@ int main(int argc, char * const argv[]) {
 		}
 
 		/* If -t was specified, attempt to fetch TAF, failing silently */
-		if(!formURL(url, sizeof(url), TAF, argv[arg])) {
-			continue;
-		}
-
 		if (tafs) {
+			if(!formURL(url, sizeof(url), TAF, argv[arg])) {
+				continue;
+			}
+
 			curl_easy_setopt(curl, CURLOPT_URL, url);
 			res = curl_easy_perform(curl);
 		}
