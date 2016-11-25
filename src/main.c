@@ -112,7 +112,7 @@ static size_t printData(void *contents, size_t size, size_t nmemb, void *userp) 
 
 	/* NOAA automated information always has a newline at the end, as is required
 	 * to be valid POSIX text. */
-	printf("%s", contents);
+	printf("%s", (const char *)contents);
 	return size * nmemb;
 }
 
