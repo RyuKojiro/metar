@@ -37,7 +37,7 @@
 #define URL_EXTENSION      ".TXT"
 
 #define STATION_ID_LEN          (4)
-#define DEFAULT_STATION_PREFIX  'K'
+#define DEFAULT_STATION_PREFIX  'K' /* TODO: This should be localizable */
 #define HTTP_RESPONSE_NOT_FOUND 404
 
 /* The URL_BUFFER_LEN must be large enough to fit the largest producible URL.
@@ -52,11 +52,12 @@ enum urlType {
 	Decoded
 };
 
-static bool formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
-	size_t stationLen = strlen(station);
-	size_t i, written;
+static bool
+formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
+	size_t stationLen, i, written;
 
 	/* Ensure the station is a valid length */
+	stationLen = strlen(station);
 	if(stationLen != STATION_ID_LEN &&
 	   stationLen != STATION_ID_LEN - 1) {
 		warnx("Station ID must be either three or four characters long.");
@@ -86,8 +87,8 @@ static bool formURL(char *buf, size_t bufLen, enum urlType type, const char *sta
 	written--;
 
 	/* Transfer the station id from end to beginning */
-	for(i = 1; i <= stationLen; i++) {
-		if(!isalnum(station[stationLen - i])) {
+	for (i = 1; i <= stationLen; i++) {
+		if (!isalnum(station[stationLen - i])) {
 			warnx("Station ID must contain only alphanumeric characters.");
 			return false;
 		}
@@ -117,15 +118,17 @@ static size_t printData(void *contents, size_t size, size_t nmemb, void *userp) 
 	return size * nmemb;
 }
 
-static int __attribute__((noreturn)) usage(void) {
-	fprintf(stderr, "usage: metar [-dt] <station_id ...>\n"
+static int __attribute__((noreturn))
+usage(void) {
+	fprintf(stderr, "usage: metar [-dt] station_id [...]\n"
 	                "\t-d Show decoded METAR output\n"
 	                "\t-t Show TAFs where available\n"
 	);
 	exit(EX_USAGE);
 }
 
-int main(int argc, char * const argv[]) {
+int
+main(int argc, char * const argv[]) {
 	CURL *curl;
 	CURLcode res;
 	int arg;
@@ -135,7 +138,7 @@ int main(int argc, char * const argv[]) {
 	bool decoded = false;
 	bool tafs = false;
 
-	while((ch = getopt(argc, argv, "dt")) != -1) {
+	while ((ch = getopt(argc, argv, "dt")) != -1) {
 		switch (ch) {
 			case 'd': {
 				decoded = true;
@@ -146,6 +149,7 @@ int main(int argc, char * const argv[]) {
 			case '?':
 			default: {
 				usage();
+				/* NOTREACHED */
 				return EX_USAGE;
 			}
 		}
@@ -156,6 +160,7 @@ int main(int argc, char * const argv[]) {
 	if (argc < 1) {
 		warnx("At least one argument is required");
 		usage();
+		/* NOTREACHED */
 		return EX_USAGE;
 	}
 
@@ -169,7 +174,7 @@ int main(int argc, char * const argv[]) {
 	curl_easy_setopt(curl, CURLOPT_FAILONERROR, true);
 
 	for (arg = 0; arg < argc; arg++) {
-		if(!formURL(url, sizeof(url), decoded ? Decoded : METAR, argv[arg])) {
+		if (!formURL(url, sizeof(url), decoded ? Decoded : METAR, argv[arg])) {
 			continue;
 		}
 
