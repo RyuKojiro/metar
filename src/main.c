@@ -20,16 +20,16 @@
  * IN THE SOFTWARE.
  */
 
-#include <curl/curl.h>
-#include <sysexits.h> /* EX_USAGE, EX_OK */
-#include <err.h>      /* errx, warnx */
-#include <ctype.h>    /* toupper, isalnum */
-#include <string.h>   /* strlen */
-#include <stdbool.h>
 #include <assert.h>
-#include <unistd.h>   /* getopt */
+#include <ctype.h>    /* toupper, isalnum */
+#include <err.h>      /* errx, warnx */
+#include <stdbool.h>
 #include <stdlib.h>   /* exit */
 #include <stdio.h>    /* printf, fprintf */
+#include <string.h>   /* strlen */
+#include <sysexits.h> /* EX_USAGE, EX_OK */
+#include <unistd.h>   /* getopt */
+#include <curl/curl.h>
 
 #define URL_PREFIX_TAF     "http://tgftp.nws.noaa.gov/data/forecasts/taf/stations/"
 #define URL_PREFIX_DECODED "http://tgftp.nws.noaa.gov/data/observations/metar/decoded/"
