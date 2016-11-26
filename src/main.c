@@ -37,9 +37,10 @@
 #define URL_PREFIX_METAR   "http://tgftp.nws.noaa.gov/data/observations/metar/stations/"
 #define URL_EXTENSION      ".TXT"
 
-#define STATION_ID_LEN          (4)
-#define DEFAULT_STATION_PREFIX  'K' /* TODO: This should be localizable */
-#define HTTP_RESPONSE_NOT_FOUND 404
+#define STATION_ID_LEN              (4)
+#define DEFAULT_STATION_PREFIX      "K" /* TODO: This should be localizable */
+#define DEFAULT_STATION_PREFIX_LEN  (sizeof(DEFAULT_STATION_PREFIX) - 1)
+#define HTTP_RESPONSE_NOT_FOUND     404
 
 /* The URL_BUFFER_LEN must be large enough to fit the largest producible URL.
  * This is easy to ensure by simply keeping the LONGEST_URL_PREFIX set to the
@@ -78,7 +79,7 @@ formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
 	/* Ensure the station is a valid length */
 	stationLen = strlen(station);
 	if(stationLen != STATION_ID_LEN &&
-	   stationLen != STATION_ID_LEN - 1) {
+	   stationLen != STATION_ID_LEN - DEFAULT_STATION_PREFIX_LEN) {
 		warnx("Station ID must be either three or four characters long.");
 		return false;
 	}
@@ -115,8 +116,8 @@ formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
 	}
 
 	/* If it is a character short, prepend the 'K' */
-	if (stationLen == STATION_ID_LEN - 1) {
-		buf[written] = DEFAULT_STATION_PREFIX;
+	if (stationLen == STATION_ID_LEN - sizeof(DEFAULT_STATION_PREFIX)) {
+		memcpy(buf + written, DEFAULT_STATION_PREFIX, DEFAULT_STATION_PREFIX_LEN);
 	}
 	written += STATION_ID_LEN;
 
