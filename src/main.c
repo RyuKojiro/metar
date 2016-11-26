@@ -105,7 +105,7 @@ formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
 	/* Subtract one for the null terminator */
 	written--;
 
-	/* Transfer the station id from end to beginning */
+	/* Transfer the station id from end to beginning, simultaneously capitalizing */
 	for (i = 1; i <= stationLen; i++) {
 		if (!isalnum(station[stationLen - i])) {
 			warnx("Station ID must contain only alphanumeric characters.");
