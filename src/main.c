@@ -116,7 +116,7 @@ formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
 	}
 
 	/* If it is a character short, prepend the 'K' */
-	if (stationLen == STATION_ID_LEN - sizeof(DEFAULT_STATION_PREFIX)) {
+	if (stationLen == STATION_ID_LEN - DEFAULT_STATION_PREFIX_LEN) {
 		memcpy(buf + written, DEFAULT_STATION_PREFIX, DEFAULT_STATION_PREFIX_LEN);
 	}
 	written += STATION_ID_LEN;
