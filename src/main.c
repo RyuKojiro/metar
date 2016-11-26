@@ -41,6 +41,7 @@
 #define DEFAULT_STATION_PREFIX      "K" /* TODO: This should be localizable */
 #define DEFAULT_STATION_PREFIX_LEN  (sizeof(DEFAULT_STATION_PREFIX) - 1)
 #define HTTP_RESPONSE_NOT_FOUND     404
+#define REQUEST_TIMEOUT             (3L) /* seconds */
 
 /* The URL_BUFFER_LEN must be large enough to fit the largest producible URL.
  * This is easy to ensure by simply keeping the LONGEST_URL_PREFIX set to the
@@ -196,6 +197,7 @@ main(int argc, char * const argv[]) {
 	/* Only set up the things that will be the same for every request once. */
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, printData);
 	curl_easy_setopt(curl, CURLOPT_FAILONERROR, true);
+	curl_easy_setopt(curl, CURLOPT_TIMEOUT, REQUEST_TIMEOUT);
 
 	for (arg = 0; arg < argc; arg++) {
 		if (!formURL(url, sizeof(url), decoded ? Decoded : METAR, argv[arg])) {
