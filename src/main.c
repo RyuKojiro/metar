@@ -29,6 +29,7 @@
 #include <string.h>   /* strlen */
 #include <sysexits.h> /* EX_USAGE, EX_OK */
 #include <unistd.h>   /* getopt */
+
 #include <curl/curl.h>
 
 #define URL_PREFIX_TAF     "http://tgftp.nws.noaa.gov/data/forecasts/taf/stations/"
