@@ -52,6 +52,20 @@ enum urlType {
 	Decoded
 };
 
+/* Function Prototypes */
+
+static bool
+formURL(char *buf, size_t bufLen, enum urlType type, const char *station);
+
+static size_t
+printData(void *contents, size_t size, size_t nmemb, void *userp);
+
+static int __attribute__((noreturn))
+usage(void);
+
+int
+main(int argc, char * const argv[]);
+
 static bool
 formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
 	size_t stationLen, i, written;
