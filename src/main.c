@@ -53,10 +53,10 @@ enum urlType {
 };
 
 static bool formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
-	size_t stationLen = strlen(station);
-	size_t i, written;
+	size_t stationLen, i, written;
 
 	/* Ensure the station is a valid length */
+	stationLen = strlen(station);
 	if(stationLen != STATION_ID_LEN &&
 	   stationLen != STATION_ID_LEN - 1) {
 		warnx("Station ID must be either three or four characters long.");
