@@ -66,6 +66,10 @@ usage(void);
 int
 main(int argc, char * const argv[]);
 
+/*
+ * Create a URL from parts, namely the urlType and the station, and store
+ * the result in the specified buffer.
+ */
 static bool
 formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
 	size_t stationLen, i, written;
@@ -123,6 +127,9 @@ formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
 	return true;
 }
 
+/*
+ * This is a libcurl callback that simply dumps the data received, byte-for-byte.
+ */
 static size_t
 printData(void *contents, size_t size, size_t nmemb, void *userp) {
 	(void)userp;
