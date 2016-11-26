@@ -22,7 +22,7 @@
 
 #include <assert.h>
 #include <ctype.h>    /* toupper, isalnum */
-#include <err.h>      /* errx, warnx */
+#include <err.h>      /* warnx */
 #include <stdbool.h>
 #include <stdlib.h>   /* exit */
 #include <stdio.h>    /* printf, fprintf */
