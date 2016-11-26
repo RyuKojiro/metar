@@ -37,7 +37,7 @@
 #define URL_EXTENSION      ".TXT"
 
 #define STATION_ID_LEN          (4)
-#define DEFAULT_STATION_PREFIX  'K'
+#define DEFAULT_STATION_PREFIX  'K' /* TODO: This should be localizable */
 #define HTTP_RESPONSE_NOT_FOUND 404
 
 /* The URL_BUFFER_LEN must be large enough to fit the largest producible URL.
