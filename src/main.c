@@ -86,8 +86,8 @@ static bool formURL(char *buf, size_t bufLen, enum urlType type, const char *sta
 	written--;
 
 	/* Transfer the station id from end to beginning */
-	for(i = 1; i <= stationLen; i++) {
-		if(!isalnum(station[stationLen - i])) {
+	for (i = 1; i <= stationLen; i++) {
+		if (!isalnum(station[stationLen - i])) {
 			warnx("Station ID must contain only alphanumeric characters.");
 			return false;
 		}
@@ -135,7 +135,7 @@ int main(int argc, char * const argv[]) {
 	bool decoded = false;
 	bool tafs = false;
 
-	while((ch = getopt(argc, argv, "dt")) != -1) {
+	while ((ch = getopt(argc, argv, "dt")) != -1) {
 		switch (ch) {
 			case 'd': {
 				decoded = true;
@@ -171,7 +171,7 @@ int main(int argc, char * const argv[]) {
 	curl_easy_setopt(curl, CURLOPT_FAILONERROR, true);
 
 	for (arg = 0; arg < argc; arg++) {
-		if(!formURL(url, sizeof(url), decoded ? Decoded : METAR, argv[arg])) {
+		if (!formURL(url, sizeof(url), decoded ? Decoded : METAR, argv[arg])) {
 			continue;
 		}
 
