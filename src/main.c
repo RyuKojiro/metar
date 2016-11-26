@@ -45,9 +45,16 @@
 
 /* The URL_BUFFER_LEN must be large enough to fit the largest producible URL.
  * This is easy to ensure by simply keeping the LONGEST_URL_PREFIX set to the
- * largest prefix string. */
+ * largest prefix string. The prefix and extension null terminators are
+ * subtracted from the sizeof's, and the final null terminator is added at the
+ * end.
+ */
 #define LONGEST_URL_PREFIX URL_PREFIX_METAR
-#define URL_BUFFER_LEN     (sizeof(LONGEST_URL_PREFIX) + STATION_ID_LEN + sizeof(URL_EXTENSION))
+#define URL_BUFFER_LEN     ( (sizeof(LONGEST_URL_PREFIX) - 1) + \
+                             STATION_ID_LEN + \
+                             (sizeof(URL_EXTENSION) - 1) + \
+                             1 \
+                           )
 
 enum urlType {
 	METAR,
