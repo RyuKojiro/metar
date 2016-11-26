@@ -52,7 +52,8 @@ enum urlType {
 	Decoded
 };
 
-static bool formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
+static bool
+formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
 	size_t stationLen, i, written;
 
 	/* Ensure the station is a valid length */
@@ -117,7 +118,8 @@ static size_t printData(void *contents, size_t size, size_t nmemb, void *userp) 
 	return size * nmemb;
 }
 
-static int __attribute__((noreturn)) usage(void) {
+static int __attribute__((noreturn))
+usage(void) {
 	fprintf(stderr, "usage: metar [-dt] <station_id ...>\n"
 	                "\t-d Show decoded METAR output\n"
 	                "\t-t Show TAFs where available\n"
@@ -125,7 +127,8 @@ static int __attribute__((noreturn)) usage(void) {
 	exit(EX_USAGE);
 }
 
-int main(int argc, char * const argv[]) {
+int
+main(int argc, char * const argv[]) {
 	CURL *curl;
 	CURLcode res;
 	int arg;
