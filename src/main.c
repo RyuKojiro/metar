@@ -116,11 +116,11 @@ formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
 
 	/* Transfer the station id from end to beginning, simultaneously capitalizing */
 	for (i = 1; i <= stationLen; i++) {
-		if (!isalnum(station[stationLen - i])) {
+		if (!isalnum((int)station[stationLen - i])) {
 			warnx("Station ID must contain only alphanumeric characters.");
 			return false;
 		}
-		buf[(written + STATION_ID_LEN) - i] = (char)toupper(station[stationLen - i]);
+		buf[(written + STATION_ID_LEN) - i] = (char)toupper((int)station[stationLen - i]);
 	}
 
 	/* If it is a character short, prepend the 'K' */
