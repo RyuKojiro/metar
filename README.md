@@ -62,16 +62,16 @@ The system specific instructions are based on these steps, which will work for a
 3. `make install` with `PREFIX` set to the desired install path
 
 ## OS X
-1. libcurl comes with all OS X SDKs
+1. libcurl comes with the OS X SDK
 2. `make`
 3. `sudo make install`
 
 ## FreeBSD
-1. `sudo pkg install curl`
+1. `pkg install curl` or `cd /usr/ports/ftp/curl && make install`
 2. `make INCLUDE=-I/usr/local/include LDFLAGS=-L/usr/local/lib`
-3. `sudo make PREFIX=/usr install`
+3. `make PREFIX=/usr install` as superuser
 
 ## NetBSD
-1. `sudo pkg_add curl`
+1. `pkg_add curl` or `cd /usr/pkgsrc/www/curl && make install`
 2. `make INCLUDE=-I/usr/pkg/include LDFLAGS=-L/usr/pkg/lib`
-3. `sudo make PREFIX=/usr install`
+3. `make PREFIX=/usr install` as superuser
