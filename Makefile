@@ -1,4 +1,5 @@
-CFLAGS=-lcurl -Wall
+CFLAGS=-Wall
+LDLIBS=-lcurl
 SRCS=src/main.c
 BUILDDIR=bin
 
@@ -12,7 +13,7 @@ MANDEST=$(PREFIX)/share/man/man1
 BINDEST=$(PREFIX)/bin
 
 $(BIN): $(BUILDDIR) $(SRCS)
-	$(CC) $(CFLAGS) -o $(BIN) $(SRCS)
+	$(CC) $(CFLAGS) $(INCLUDE) $(LDFLAGS) $(LDLIBS) -o $(BIN) $(SRCS)
 
 $(BUILDDIR):
 	mkdir $(BUILDDIR)
