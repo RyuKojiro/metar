@@ -58,8 +58,8 @@ cycle: 6
 The system specific instructions are based on these steps, which will work for any system.
 
 1. Get libcurl
-2. `make` with `INCLUDE` and `LDFLAGS` set to where libcurl is installed
-3. `make install` with `PREFIX` set to the desired install path
+2. Build using `make` with `INCLUDE` and `LDFLAGS` set to where libcurl is installed
+3. Install via `make install` with `PREFIX` set to the desired install path
 
 ## OS X
 1. libcurl comes with the OS X SDK
