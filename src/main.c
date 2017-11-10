@@ -161,7 +161,6 @@ main(int argc, char * const argv[]) {
 			case 't': {
 				tafs = true;
 			} break;
-			case '?':
 			default: {
 				usage();
 				/* NOTREACHED */
