@@ -212,12 +212,10 @@ main(int argc, char * const argv[]) {
 
 		/* If -t was specified, attempt to fetch TAF, failing silently */
 		if (tafs) {
-			if(!formURL(url, sizeof(url), TAF, argv[arg])) {
-				continue;
+			if(formURL(url, sizeof(url), TAF, argv[arg])) {
+				curl_easy_setopt(curl, CURLOPT_URL, url);
+				curl_easy_perform(curl);
 			}
-
-			curl_easy_setopt(curl, CURLOPT_URL, url);
-			curl_easy_perform(curl);
 		}
 	}
 
