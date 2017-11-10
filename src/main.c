@@ -62,20 +62,6 @@ enum urlType {
 	Decoded
 };
 
-/* Function Prototypes */
-
-static bool
-formURL(char *buf, size_t bufLen, enum urlType type, const char *station);
-
-static size_t
-printData(void *contents, size_t size, size_t nmemb, void *userp);
-
-static int __attribute__((noreturn))
-usage(void);
-
-int
-main(int argc, char * const argv[]);
-
 /*
  * Create a URL from parts, namely the urlType and the station, and store
  * the result in the specified buffer.
