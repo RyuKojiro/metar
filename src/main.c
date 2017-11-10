@@ -68,10 +68,8 @@ enum urlType {
  */
 static bool
 formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
-	size_t stationLen, i, written;
-
 	/* Ensure the station is a valid length */
-	stationLen = strlen(station);
+	size_t stationLen = strlen(station);
 	if(stationLen != STATION_ID_LEN &&
 	   stationLen != STATION_ID_LEN - DEFAULT_STATION_PREFIX_LEN) {
 		warnx("Station ID must be either three or four characters long.");
@@ -95,10 +93,10 @@ formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
 		}
 	}
 	strncpy(buf, prefix, bufLen);
-	written = strlen(prefix);
+	size_t written = strlen(prefix);
 
 	/* Transfer the station id from end to beginning, simultaneously capitalizing */
-	for (i = 1; i <= stationLen; i++) {
+	for (size_t i = 1; i <= stationLen; i++) {
 		if (!isalnum((int)station[stationLen - i])) {
 			warnx("Station ID must contain only alphanumeric characters.");
 			return false;
@@ -144,15 +142,10 @@ usage(void) {
 
 int
 main(int argc, char * const argv[]) {
-	CURL *curl;
-	CURLcode res;
-	int arg;
-	long response;
-	char url[URL_BUFFER_LEN];
-	int ch;
 	bool decoded = false;
 	bool tafs = false;
 
+	int ch;
 	while ((ch = getopt(argc, argv, "dt")) != -1) {
 		switch (ch) {
 			case 'd': {
@@ -178,7 +171,7 @@ main(int argc, char * const argv[]) {
 		return EX_USAGE;
 	}
 
-	curl = curl_easy_init();
+	CURL *curl = curl_easy_init();
 	if (!curl) {
 		return EX_SOFTWARE;
 	}
@@ -188,15 +181,17 @@ main(int argc, char * const argv[]) {
 	curl_easy_setopt(curl, CURLOPT_FAILONERROR, true);
 	curl_easy_setopt(curl, CURLOPT_TIMEOUT, REQUEST_TIMEOUT);
 
-	for (arg = 0; arg < argc; arg++) {
+	for (int arg = 0; arg < argc; arg++) {
+		char url[URL_BUFFER_LEN];
 		if (!formURL(url, sizeof(url), decoded ? Decoded : METAR, argv[arg])) {
 			continue;
 		}
 
 		curl_easy_setopt(curl, CURLOPT_URL, url);
-		res = curl_easy_perform(curl);
+		CURLcode res = curl_easy_perform(curl);
 
 		/* This is resilient to both FTP and HTTP */
+		long response;
 		curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response);
 		if (res == CURLE_REMOTE_FILE_NOT_FOUND || response == HTTP_RESPONSE_NOT_FOUND) {
 			warnx("Station ID \"%s\" not found", argv[arg]);
