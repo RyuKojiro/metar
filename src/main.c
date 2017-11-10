@@ -93,26 +93,23 @@ formURL(char *buf, size_t bufLen, enum urlType type, const char *station) {
 	}
 
 	/* Copy the first part of the URL */
+	const char *prefix;
 	switch (type) {
 		case METAR: {
-			strncpy(buf, URL_PREFIX_METAR, bufLen);
-			written = sizeof(URL_PREFIX_METAR);
+			prefix = URL_PREFIX_METAR;
 		} break;
 		case TAF: {
-			strncpy(buf, URL_PREFIX_TAF, bufLen);
-			written = sizeof(URL_PREFIX_TAF);
+			prefix = URL_PREFIX_TAF;
 		} break;
 		case Decoded: {
-			strncpy(buf, URL_PREFIX_DECODED, bufLen);
-			written = sizeof(URL_PREFIX_DECODED);
+			prefix = URL_PREFIX_DECODED;
 		} break;
 		default: {
 			return false;
 		}
 	}
-
-	/* Subtract one for the null terminator */
-	written--;
+	strncpy(buf, prefix, bufLen);
+	written = strlen(prefix);
 
 	/* Transfer the station id from end to beginning, simultaneously capitalizing */
 	for (i = 1; i <= stationLen; i++) {
@@ -145,7 +142,7 @@ printData(void *contents, size_t size, size_t nmemb, void *userp) {
 	(void)userp;
 
 	/* NOAA automated information always has a newline at the end, as is required
-	 * to be valid POSIX text. */
+	 * to be a valid POSIX text file. */
 	printf("%s", (const char *)contents);
 	return size * nmemb;
 }
