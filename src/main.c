@@ -180,6 +180,7 @@ main(int argc, char * const argv[]) {
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, printData);
 	curl_easy_setopt(curl, CURLOPT_FAILONERROR, true);
 	curl_easy_setopt(curl, CURLOPT_TIMEOUT, REQUEST_TIMEOUT);
+	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
 	for (int arg = 0; arg < argc; arg++) {
 		char url[URL_BUFFER_LEN];
