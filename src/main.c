@@ -131,13 +131,14 @@ printData(void *contents, size_t size, size_t nmemb, void *userp) {
 	return size * nmemb;
 }
 
-static int __attribute__((noreturn))
+static int
 usage(void) {
 	fprintf(stderr, "usage: metar [-dt] station_id [...]\n"
 	                "\t-d Show decoded METAR output\n"
 	                "\t-t Show TAFs where available\n"
 	);
-	exit(EX_USAGE);
+
+	return EX_USAGE;
 }
 
 int
@@ -155,9 +156,7 @@ main(int argc, char * const argv[]) {
 				tafs = true;
 			} break;
 			default: {
-				usage();
-				/* NOTREACHED */
-				return EX_USAGE;
+				return usage();
 			}
 		}
 	}
@@ -166,9 +165,7 @@ main(int argc, char * const argv[]) {
 
 	if (argc < 1) {
 		warnx("At least one argument is required");
-		usage();
-		/* NOTREACHED */
-		return EX_USAGE;
+		return usage();
 	}
 
 	CURL *curl = curl_easy_init();
