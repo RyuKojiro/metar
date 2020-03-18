@@ -13,7 +13,7 @@ MANDEST=$(PREFIX)/share/man/man1
 BINDEST=$(PREFIX)/bin
 
 $(BIN): $(BUILDDIR) $(SRCS)
-	$(CC) $(CFLAGS) $(INCLUDE) $(LDFLAGS) $(LDLIBS) -o $(BIN) $(SRCS)
+	$(CC) $(CFLAGS) $(INCLUDE) $(SRCS) $(LDFLAGS) $(LDLIBS) -o $(BIN)
 
 $(BUILDDIR):
 	mkdir $(BUILDDIR)
